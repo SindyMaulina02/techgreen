@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Mahasiswa</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f3f3f3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        .form-container h2 {
+            color: #07491c;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 4px;
+            background-color: #0a6812;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #0b6013;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Update Mahasiswa</h2>
+        <form id="mahasiswaForm">
+            <input type="hidden" id="mahasiswaId" name="mahasiswaId"> <!-- Hidden input for Mahasiswa ID -->
+            <div class="input-group">
+                <label for="nama">Name</label>
+                <input type="text" id="nama" name="nama" required>
+            </div>
+            <div class="input-group">
+                <label for="nim">NIM</label>
+                <input type="text" id="nim" name="nim" required>
+            </div>
+            <div class="input-group">
+                <label for="jurusan">Major</label>
+                <input type="text" id="jurusan" name="jurusan" required>
+            </div>
+            <div class="input-group">
+                <label for="userId">User ID</label>
+                <input type="number" id="userId" name="userId" required>
+            </div>
+            <div class="input-group">
+                <label for="kelasId">Class ID</label>
+                <input type="number" id="kelasId" name="kelasId" required>
+            </div>
+            <button type="submit" class="btn">Update Mahasiswa</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mahasiswaForm = document.getElementById('mahasiswaForm');
+            const urlParams = new URLSearchParams(window.location.search);
+            const mahasiswaId = urlParams.get('id'); // Get Mahasiswa ID from URL query parameter
+
+            if (!mahasiswaId) {
+                console.error('Mahasiswa ID not found in URL.');
+                Swal.fire('Error!', 'Mahasiswa ID not found in URL.', 'error');
+                return;
+            }
+
+            const token = localStorage.getItem('token');
+
+            // Fetch mahasiswa data by ID
+            fetch(`https://130.162.195.228/mhs714220018/mahasiswa/${mahasiswaId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch mahasiswa data');
+                }
+                return response.json();
+            })
+            .then(mahasiswa => {
+                // Fill form fields with mahasiswa data
+                document.getElementById('mahasiswaId').value = mahasiswa.id;
+                document.getElementById('nama').value = mahasiswa.nama;
+                document.getElementById('nim').value = mahasiswa.nim;
+                document.getElementById('jurusan').value = mahasiswa.jurusan;
+                document.getElementById('userId').value = mahasiswa.user_id;
+                document.getElementById('kelasId').value = mahasiswa.kelas_id;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire('Error!', `Failed to fetch mahasiswa data: ${error.message}`, 'error');
+            });
+
+            // Handle form submission
+            mahasiswaForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const nama = document.getElementById('nama').value;
+                const nim = document.getElementById('nim').value;
+                const jurusan = document.getElementById('jurusan').value;
+                const userId = document.getElementById('userId').value;
+                const kelasId = document.getElementById('kelasId').value;
+
+                const requestBody = {
+                    nama: nama,
+                    nim: nim,
+                    jurusan: jurusan,
+                    user_id: parseInt(userId),
+                    kelas_id: parseInt(kelasId)
+                };
+
+                fetch(`https://130.162.195.228/mhs714220018/mahasiswa/${mahasiswaId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(requestBody)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to update mahasiswa');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Mahasiswa updated successfully',
+                        text: data.message,
+                        showConfirmButton: true
+                    }).then(() => {
+                        window.location.href = 'mahasiswa.html'; // Redirect to mahasiswa list page
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed to update mahasiswa',
+                        text: error.message
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

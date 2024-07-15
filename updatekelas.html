@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Class</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            background-color: #f3f3f3;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input[type="text"], .form-group input[type="number"], .form-group select {
+            width: 100%;
+            padding: 0.5rem;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-group .btn-container {
+            margin-top: 1rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            background-color: #0c6e05;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #0f5e10;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Update Class</h1>
+        <form id="updateKelasForm">
+            <div class="form-group">
+                <label for="namaKelas">Nama Kelas:</label>
+                <input type="text" id="namaKelas" name="namaKelas" required>
+            </div>
+            <div class="form-group">
+                <label for="semester">Semester:</label>
+                <input type="number" id="semester" name="semester" required>
+            </div>
+            <!-- tambahkan field lainnya sesuai kebutuhan -->
+            <div class="form-group">
+                <div class="btn-container">
+                    <button type="submit" class="btn">Update Class</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const updateKelasForm = document.getElementById("updateKelasForm");
+
+            updateKelasForm.addEventListener("submit", function(event) {
+                event.preventDefault();
+
+                const namaKelas = document.getElementById("namaKelas").value;
+                const semester = document.getElementById("semester").value;
+                const kelasId = getKelasIdFromQueryParam(); // Fungsi untuk mendapatkan ID kelas dari query parameter
+                const token = localStorage.getItem("token"); // Ambil token dari local storage, pastikan token sudah tersedia
+
+                if (!token) {
+                    alert("Token tidak ditemukan. Silakan login kembali.");
+                    console.error("Token tidak ditemukan di localStorage.");
+                    return;
+                }
+
+                console.log("Token yang digunakan:", token);
+
+                const data = {
+                    nama_kelas: namaKelas,
+                    semester: parseInt(semester) // Pastikan semester diubah ke tipe integer jika diperlukan
+                    // tambahkan field lainnya sesuai kebutuhan
+                };
+
+                // Mengirim permintaan update ke server
+                fetch(`https://130.162.195.228/mhs714220018/kelas/${kelasId}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Kelas berhasil diupdate:", data);
+                    alert("Kelas berhasil diupdate!");
+                    // Redirect or update UI as needed
+                })
+                .catch(error => {
+                    console.error("Ada masalah dengan permintaan update kelas:", error);
+                    alert(`Terjadi kesalahan: ${error.message}`);
+                });
+            });
+
+            function getKelasIdFromQueryParam() {
+                // Fungsi untuk mendapatkan ID kelas dari query parameter URL
+                const urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get('id');
+            }
+        });
+    </script>
+</body>
+</html>

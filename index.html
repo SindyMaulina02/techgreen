@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --secondary-color: #020202;
+            --contrast-color: #00ff0d;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 100%;
+            z-index: -10;
+            background-color: var(--contrast-color);
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--secondary-color);
+            color: #fff;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: #058e03;
+        }
+
+        .navbar .logo {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+        }
+
+        .navbar ul li {
+            margin: 0 10px;
+        }
+
+        .navbar ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar ul li a:hover {
+            background-color: #0c6e05;
+        }
+
+        .navbar .btn-login {
+            background-color: #0c6e05;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar .btn-login:hover {
+            background-color: #0f5e10;
+        }
+
+        @keyframes slideBackground {
+            0% {
+                background-image: url('8.jpg');
+            }
+            50% {
+                background-image: url('1.jpg');
+            }
+            100% {
+                background-image: url('8.jpg');
+            }
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: left;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            padding: 0 2px;
+            height: 100vh; /* Ensure full height */
+            animation: slideBackground 10s infinite;
+        }
+
+        .container_content {
+            width: 50%;
+            text-align: left;
+        }
+
+        .container_content_inner {
+            width: 100%;
+            padding-left: 10%;
+        }
+
+        .card-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px; /* Jarak antar kartu */
+            justify-content: center;
+            background-color: #064d05;
+            padding: 20px 0; /* Add padding to match overall spacing */
+            margin-top: 0; /* Ensure no margin */
+        }
+
+        .card {
+            max-width: 300px; /* Lebar maksimum kartu */
+            background-color: #fff; /* Warna latar belakang kartu */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Bayangan kartu */
+        }
+
+        .card-img-top {
+            width: 100%;
+            height: auto;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 1.25rem; /* Ukuran teks judul kartu */
+            margin-bottom: 10px;
+        }
+
+        .card-text {
+            font-size: 1rem; /* Ukuran teks konten kartu */
+            color: #555;
+        }
+
+        .card-footer {
+            background-color: #f8f9fa; /* Warna latar belakang footer kartu */
+            padding: 10px 20px;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+
+        .text-body-secondary {
+            color: #888;
+            font-size: 0.875rem; /* Ukuran teks footer kartu */
+        }
+
+        .btns {
+            height: 100%;
+            position: relative;
+            width: 150px;
+            overflow: hidden;
+        }
+
+        .btns_more {
+            background: transparent;
+            border: 1px solid var(--contrast-color);
+            border-radius: 50px;
+            padding: 8px 12px;
+            color: #0ce109;
+            font-size: 16px;
+            text-transform: uppercase;
+            position: relative;
+            margin-top: 15px;
+            outline: none;
+            transform: translateY(0);
+            animation: slideUp .8s ease-in-out forwards 1s;
+        }
+
+        .title {
+            overflow: hidden;
+            height: auto;
+        }
+
+        h1 {
+            font-size: 40px;
+            color: var(--contrast-color);
+            margin-bottom: 20px;
+            transform: translateY(0);
+            animation: slideUp .8s ease forwards .5s;
+        }
+
+        .additional-content {
+            background-color: rgba(27, 168, 34, 0.9);
+            text-align: center;
+            color: #000;
+            width: 100%; /* Make sure it takes the full width */
+            padding: 20px; /* Add some padding */
+        }
+
+        @keyframes slideUp {
+            0% {
+                transform: translateY(300px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">TechGreen University</div>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#additional-content">Mahasiswa</a></li>
+            <li><a href="#jurusan">Jurusan</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="login.html" class="btn-login">Login</a></li>
+        </ul>
+    </nav>
+
+    <div id="home" class="container">
+        <div class="container_content">
+            <div class="container_content_inner">
+                <div class="title">
+                    <h1>TECHGREEN UNIVERSITY</h1>
+                </div>
+                <div class="par">
+                    <p>
+                        Cupiditate alias odio omnis minima veritatis saepe porro, repellendus natus vitae, sequi exercitationem ipsam, qui possimus sit eveniet laborum sapiente quisquam quae neque velit?
+                    </p>
+                </div>
+                <div class="btns">
+                    <button class='btns_more'> See more </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="additional-content" class="card-group">
+        <div class="additional-content">
+            <h2>MAHASISWA TECHGREEN UNIVERSITY</h2>
+            <p>This is additional content placed below the card group.</p>
+        </div>
+        <div class="card">
+            <img src="2.jpg" class="card-img-top" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            </div>
+            <div class="card-footer">
+                <small class="text-body-secondary">Last updated 3 mins ago</small>
+            </div>
+        </div>
+        <div class="card">
+            <img src="3.jpg" class="card-img-top" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+            </div>
+            <div class="card-footer">
+                <small class="text-body-secondary">Last updated 3 mins ago</small>
+            </div>
+        </div>
+        <div class="card">
+            <img src="6.jpg" class="card-img-top" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+            </div>
+            <div class="card-footer">
+                <small class="text-body-secondary">Last updated 3 mins ago</small>
+            </div>
+        </div>
+    </div>
+    
+    
+
+    <div class="overlay"></div>
+</body>
+</html>
